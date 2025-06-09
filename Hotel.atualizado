@@ -2,8 +2,8 @@
 #include <stdlib.h>
 
 typedef struct{
-	int quarto, telefone;
-	char nome[100], cpf[10], rg[10], email[30];
+	int quarto, telefone, num, dias;
+	char nome[100], cpf[10], email[30], entrada[10], saida[10];
 	float total, gastos;
 }Reserva;
 Reserva reservas[100];
@@ -90,16 +90,19 @@ void cadastro(){
 
 void entrar(){
 	char tent[30];
-	int tenta, opcao;
+	int tenta, opcao,encontrar=0;
 	printf("----Entrar-----\n");
 	printf("E-mail: ");
 	scanf("%[^\n]", tent);
 	printf("Senha: ");
 	scanf("%d", &tenta);
+	getchar();
+	system("clear");
 	for(int i=0; i<idd; i++){
 		if(tenta==cadastros[i].senha){
-		
+		encontrar=1;
 		do{
+		
 		printf("-----Menu-----\n");
 		printf("1 - Reservar\n");
 		printf("2 - Serviço de quarto\n");
@@ -111,10 +114,14 @@ void entrar(){
 		switch(opcao){
 			case 1:
 				reserva();
+				getchar();
+		        system("clear");
 				break;
 				
 			case 2:
 				servico();
+				getchar();
+		        system("clear");
 				break;
 				
 			case 0:
@@ -125,55 +132,169 @@ void entrar(){
 				printf("Opção invalida!!\n");
 				break;
 		}
+		
+	printf("\nClique enter para continuar....");
+	getchar();
+	getchar();
+	system ("clear");
 	}while(opcao!=0);
 	}
+	else if (encontrar==0){
+	    printf("Usuário não encontrado!!\n");
+	}
+}
 	}
 	
-}
+
 
 void reserva(){
-	printf("Teste");
+	int mais, quarto, opcao;
+	
+	    printf("-----Reserva-----\n");
+	    printf("Preencha com as suas informacoes pessoais abaixo:\n");
+		printf ("\nNome completo: ");
+		scanf("%s", reservas[id].nome);
+		printf("E-mail: ");
+		scanf("%s",  reservas[id].email);
+		printf("Telefone: ");
+		scanf("%d", &reservas[id].telefone);
+		printf("RG: ");
+		scanf("%s", reservas[id].cpf);
+		printf("Quantidade de dias da hospedagem: ");
+		scanf("%d", &reservas[id].dias);
+		printf("Data de hospedagem: ");
+		scanf("%s", reservas[id].entrada);
+		printf("Data de saida: ");
+		scanf("%s", reservas[id].saida);
+		getchar();
+		system("clear");
+		printf("\nConfirme seus dados:\n");
+		printf("Nome:%s\n", reservas[id].nome);
+		printf("Email:%s\n", reservas[id].email);
+		printf("Telefone:%d\n", reservas[id].telefone);
+		printf("RG:%s\n", reservas[id].cpf);
+		printf("Dias:%d\n", reservas[id].dias);
+		printf("Dia de entrada: %s\n", reservas[id].entrada);
+		printf("Dia de saída: %s\n", reservas[id].saida); 
+		printf("\n");
+		printf("Esta tudo correto?\n1-Confirmar\n2-Nao confirmar\n");
+		scanf("%d", &opcao);
+		getchar();
+        system("clear");
+        do{
+        switch (opcao) {
+		case 1:
+			printf("Escolha a melhor opcao de quarto para voce*\n");
+			printf("1-Suite (Uma cama de casal)- R$375,00\n");
+			printf("2-Individual (Uma cama de solteiro)- R$300,00\n"); 
+			printf("3-Familia (Uma cama de casal + uma de solteiro)- R$450,00\n");
+			printf("4-Amigos P (Duas camas de solteiro)- R$400,00 \n");
+			printf("5-Amigos M (TrC*s camas de solteiro)- R$475,00\n");
+			printf("Insira o numero correpondente ao quarto que deseja:\n");
+			scanf("%d", &quarto);
+			switch (quarto) {
+			case 1:
+				reservas[id].total = (375.00 * reservas[id].dias) + reservas[id].total;
+				break;
+			case 2:
+				reservas[id].total = (300.00 * reservas[id].dias) + reservas[id].total;
+				break;
+			case 3:
+				reservas[id].total = (450.00 * reservas[id].dias) + reservas[id].total;
+				break;
+			case 4:
+				reservas[id].total = (400.00 * reservas[id].dias) + reservas[id].total;
+				break;
+			case 5:
+				reservas[id].total = (475.00 * reservas[id].dias) +reservas[id].total;
+				break;
+			default:
+				printf("opcao invalida! programa encerrado");
+				break;
+			
+			}
+			getchar();
+            system("clear");
+			printf("Deseja selecionar mais um quarto?\n");
+			printf("1-Sim\n2-Nao\n");
+			scanf("%d", &mais);
+			getchar();
+			system("clear");
+	}
+	
+}while(mais!=2);
+    printf("Total: R$%.2f\n", reservas[id].total);
+    printf("Deseja confirmar?\n");
+    printf("1 - Sim\n");
+    printf("2 - Não\n");
+    scanf("%d", &opcao);
+    switch(opcao){
+        case 1:
+        printf("Reserva confirmada!\n");
+        printf("Confirme seu ID de reserva na recepção!\n");
+        reservas[id].num=id;
+        id++;
+        break;
+        
+        case 2:
+        printf("Reserva cancelada!\n");
+    }
 }
 
 void servico(){
-	int opcao;
-	do{
-	printf("----Serviços----\n");
-	printf("1 - Lavanderia\n");
-	printf("2 - Cozinha\n");
-	printf("3 - Limpeza\n");
-	printf("0 - Sair\n");
-	printf("Escolha uma opção: ");
-	scanf("%d", &opcao);
-	getchar();
-	system ("clear");
-	switch(opcao){
-		case 1 :
-			lavanderia();
-			break;
+	int opcao, idc, encontrar=0;
+	printf("ID da reserva:");
+		    scanf("%d", &idc);
+		    getchar();
+		    system("clear");
+		    for(int i=0; i<id; i++){
+		        if(idc==reservas[i].num){
+		            encontrar=1;
+		                do{
+		                    printf("----Serviços----\n");
+		                    printf("1 - Lavanderia\n");
+		                    printf("2 - Cozinha\n");
+		                    printf("3 - Limpeza\n");
+		                    printf("0 - Sair\n");
+		                    printf("Escolha uma opção: ");
+		                    scanf("%d", &opcao);
+		                    getchar();
+		                    system ("clear");
+		                    switch(opcao){
+		                        case 1 :
+			                       lavanderia();
+			                       break;
 			
-		case 2:
-			cozinha();
-			break;
+		                        case 2:
+			                        cozinha();
+		                         	break;
 			
-		case 3:
-			faxineira();
-			break;
+		                        case 3:
+			                         faxineira();
+			                         break;
 			
-		case 0:
-			printf("Volte sempre!!..");
-			break;
+		                        case 0:
+			                         printf("Volte sempre!!..");
+			                         break;
 			
-		default:
-			printf("Opção invalida...");
-			break;
-	}
-}while(opcao!=0);
+		                        default:
+			                         printf("Opção invalida...");
+			                         break;
+		                        
+		                    }
+		                    
+		                }while(opcao!=0);
+		        }
+		      
+		      else if(encontrar==0){
+		      printf("Reserva não encontrada!!\n");
+		      }
+}
 }
 
 void lavanderia(){
-	char pedido [200], confirmar[3];
-	int idc;
+	char pedido [200];
+	int idc, confirmar;
 	printf("-----Lavanderia-----\n");
 	printf("Escreva o seu pedido: ");
 	scanf("%[^\n]", pedido);
@@ -183,9 +304,9 @@ void lavanderia(){
 	system ("clear");
 	printf("Pedido: %s\n", pedido);
 	printf("ID: %d\n", id);
-	printf("Confirmar pedido? (Sim ou Nao)");
-	scanf("%s", confirmar);
-	if(confirmar=="Sim"){
+	printf("Confirmar pedido?\n1- Sim\n2 - Nao\n");
+	scanf("%d", &confirmar);
+	if(confirmar== 1){
 		for(int i=0; i<id; i++){
 			if(idc==id){
 				printf("Pedido Confirmado!!\n");
@@ -193,15 +314,15 @@ void lavanderia(){
 		}
 		
 	}
-	else(
+	else{
 	printf("Pedido Cancelado\n");
-	)
+	}
 	
 }
 
 void faxineira(){
-	char pedido [200], confirmar[3];
-	int idc;
+	char pedido [200];
+	int idc, confirmar;
 	printf("-----Limpeza-----\n");
 	printf("Escreva o seu pedido: ");
 	scanf("%[^\n]", pedido);
@@ -211,9 +332,9 @@ void faxineira(){
 	system ("clear");
 	printf("Pedido: %s\n", pedido);
 	printf("ID: %d\n", id);
-	printf("Confirmar pedido? (Sim ou Nao)");
-	scanf("%s", confirmar);
-	if(confirmar=="Sim"){
+	printf("Confirmar pedido?\n1- Sim\n2 - Nao\n");
+	scanf("%d", &confirmar);
+	if(confirmar==1){
 		for(int i=0; i<id; i++){
 			if(idc==id){
 				printf("Pedido Confirmado!!\n");
@@ -221,14 +342,14 @@ void faxineira(){
 		}
 		
 	}
-	else(
+	else{
 	printf("Pedido Cancelado\n");
-	)
+	}
 	
 }
 
 void cozinha(){
-	int opcao, escolha, id, confirmar;
+	int opcao, escolha, idc, confirmar;
 	printf("-----Cozinha-----\n");
 	printf("1 - Refeicoes principais\n");
 	printf("2 - Pestiscos\n");
@@ -246,23 +367,23 @@ void cozinha(){
 			printf("3 - Bife de Cavalo: Bife de contrafile grelhado, coberto com um ovo frito, servido com arroz, feijao e batatas fritas-R$ 28,00\n");
 			printf("4 - Costelinha de Porco Assada: Costelinha de porco assada no forno, com molho barbecue, acompanhada de arroz e salada de folhas-R$ 30,00\n");
 			printf("Selecione uma opção:");
-			canf("%d", &escolha);
+			scanf("%d", &escolha);
 					switch (escolha)
 					{
 					case 1:
-						reservas[idc].total= 40.99;
+						reservas[idc].gastos= 40.99;
 						break;
 						
 					case 2:
-						reservas[idc].total= 25.00;
+						reservas[idc].gastos= 25.00;
 						break;
 						
 					case 3:
-						reservas[idc].total= 28.00;
+						reservas[idc].gastos= 28.00;
 						break;
 						
 					case 4:
-						reservas[idc].total= 30.00;
+						reservas[idc].gastos= 30.00;
 						break;
 						
 					default:
@@ -298,19 +419,19 @@ void cozinha(){
 			switch (escolha)
 			{
 				case 1:
-					reservas[id].total= 5.00;
+					reservas[idc].gastos= 5.00;
 					break;
 					
 				case 2:
-					reservas[id].total= 22.00;
+					reservas[idc].gastos= 22.00;
 					break;
 				
 				case 3:
-					reservas[id].total= 18.00;
+					reservas[idc].gastos= 18.00;
 					break;
 					
 				case 4:
-					reservas[id].total= 20.00;
+					reservas[idc].gastos= 20.00;
 					break;
 				
 				default:
@@ -347,29 +468,29 @@ void cozinha(){
     		switch (escolha)
 				{
 					case 1:
-						reservas[id].total= 5.0;
+						reservas[idc].gastos= 5.0;
 						break;
 						
 					case 2:
-						reservas[id].total= 6.00;
+						reservas[idc].gastos= 6.00;
 						break;
 						
 					case 3:
-						reservas[id].total= 8.00;
+						reservas[idc].gastos= 8.00;
 						break;
 						
 					case 4:
-						reservas[id].total= 5.00;
+						reservas[idc].gastos= 5.00;
 						break;
 						
 					default:
 					    printf("opção invalida! programa encerrado");
 			            break;
 					}
-					]
+					
 					getchar();
 					system("clear");
-				    printf("Deseja confirmar o pedido?\n1-Sim\n2-Nao\n", total);
+				    printf("Deseja confirmar o pedido?\n1-Sim\n2-Nao\n");
 					scanf("%d", &confirmar);
 					switch (confirmar)
 					{
